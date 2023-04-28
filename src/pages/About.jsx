@@ -2,7 +2,7 @@ import React from 'react';
 
 function About() {
   return (
-    <div>
+    <div className=' h-screen'>
       <h1 className='text-6xl mb-4'> Github Finder </h1>
     </div>
   );
