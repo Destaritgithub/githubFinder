@@ -11,7 +11,8 @@ import About from './pages/About';
 import NotFound from './pages/NotFound';
 import { GithubProvider } from './context/github/Githubcontext';
 import { AlertProvider } from './context/alert/AlertContext';
-import Alert from './component/Alert';
+import Alert from './component/layout/Alert';
+import User from './pages/User';
 function App() {
   return (
     <GithubProvider>
@@ -24,6 +25,7 @@ function App() {
               <Routes>
                 <Route exactS path='/' element={<Home />} />
                 <Route path='/about' element={<About />} />
+                <Route path='/user/:login' element={<User />} />
                 <Route path='/notfound' element={<NotFound />} />
                 <Route path='/*' element={<NotFound />} />
               </Routes>

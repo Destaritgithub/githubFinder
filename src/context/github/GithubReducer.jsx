@@ -11,11 +11,18 @@ const githubReducer = (state, action) => {
         ...state,
         loading: true,
       };
+    case 'GET_USER':
+      return {
+        ...state,
+        user: action.payload,
+        loading: false,
+      };
     case 'CLEAR_USERS':
       return {
         ...state,
         users: [],
       };
+
     default:
       return state;
   }
