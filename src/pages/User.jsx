@@ -8,15 +8,22 @@ import {
 import { useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Spinner from '../component/layout/Spinner';
+import RepoList from '../component/repos/RepoList';
 import Githubcontext from '../context/github/Githubcontext';
+import { getUserAndRepos } from '../context/github/GithubAction.js';
 
 function User() {
-  const { getUser, user, loading } = useContext(Githubcontext);
+  const { user, loading, repos, dispatch } = useContext(Githubcontext);
 
   const params = useParams();
   useEffect(() => {
-    getUser(params.login);
-  }, []);
+    dispatch({ type: 'SET_LOADING' });
+    const getUserData = async () => {
+      const userData = await getUserAndRepos(params.login);
+      dispatch({ type: 'GET_USER_AND_REPOS', payload: userData });
+    };
+    getUserData();
+  }, [dispatch, params.login]);
 
   const {
     name,
@@ -116,7 +123,7 @@ function User() {
             </div>
           </div>
         </div>
-        <div className='w-full fy-5 mb-6 rounded-lg shadow-md bg-base-100 stats'>
+        <div className=' flex justify-between w-full fy-5 mb-6 rounded-lg shadow-md bg-base-100 stats'>
           <div className='stat'>
             <div className='stat-figure text-secondary text-red-500'>
               <FaUsers className=' text-3xl md:text-5xl' />
@@ -126,7 +133,36 @@ function User() {
               {followers}
             </div>
           </div>
+
+          <div className='stat'>
+            <div className='stat-figure text-secondary text-red-500'>
+              <FaUserFriends className=' text-3xl md:text-5xl' />
+            </div>
+            <div className='stat-title pr-5'>Following</div>
+            <div className='stat-value pr-5 text-3xl md:text-4xl'>
+              {following}
+            </div>
+          </div>
+          <div className='stat'>
+            <div className='stat-figure text-secondary text-red-500'>
+              <FaCodepen className=' text-3xl md:text-5xl' />
+            </div>
+            <div className='stat-title pr-5'>Public Repos</div>
+            <div className='stat-value pr-5 text-3xl md:text-4xl'>
+              {public_repos}
+            </div>
+          </div>
+          <div className='stat'>
+            <div className='stat-figure text-secondary text-red-500'>
+              <FaStore className=' text-3xl md:text-5xl' />
+            </div>
+            <div className='stat-title pr-5'>Public Gists</div>
+            <div className='stat-value pr-5 text-3xl md:text-4xl'>
+              {public_gists}
+            </div>
+          </div>
         </div>
+        <RepoList repos={repos} />
       </div>
     </>
   );
